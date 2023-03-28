@@ -26,8 +26,6 @@ def get_data(case, type):
 
     if case == '2dlshape' and type == 'cnn': case += '_padded'
 
-    datapath = srcpath + "/data/FEMData/"
-
     X_train = np.load(datapath+'features_train_'+str(case)+'.npy')
     Y_train = np.load(datapath+'labels_train_'+str(case)+'.npy')
 
