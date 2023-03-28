@@ -1,0 +1,355 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     14507,        347]
+NotebookOptionsPosition[     13565,        326]
+NotebookOutlinePosition[     13994,        343]
+CellTagsIndexPosition[     13951,        340]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"<<", "AceFEM`"}], ";"}]], "Input",
+ CellChangeTimes->{{3.821960854645931*^9, 3.8219608753257465`*^9}},
+ Background->RGBColor[0.87, 0.94, 1],
+ CellLabel->"In[1]:=",ExpressionUUID->"bfdda654-c2f4-45f7-90d9-e46c25286ea2"],
+
+Cell["Initialise the variables ", "Text",
+ CellChangeTimes->{{3.886759041586936*^9, 3.886759047498005*^9}},
+ Background->RGBColor[
+  0.94, 0.91, 0.88],ExpressionUUID->"9cf7c054-3bdb-4c14-9445-4d8d051ecb32"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"str", "=", 
+    RowBox[{"OpenWrite", "[", "\"\<3dbeam.csv\>\"", "]"}]}], ";"}], 
+  " "}], "\n", 
+ RowBox[{
+  RowBox[{"noTrainings", "=", "110"}], ";", " ", 
+  RowBox[{"(*", " ", 
+   RowBox[{"Number", " ", "of", " ", "examples", " ", "per", " ", "node"}], 
+   " ", "*)"}], "\n", 
+  RowBox[{"L", "=", "4"}], ";", 
+  RowBox[{"H", "=", "1"}], ";", 
+  RowBox[{"V", "=", "1"}], ";", 
+  RowBox[{"nx", "=", "27"}], " ", ";", 
+  RowBox[{"ny", "=", "11"}], " ", ";", 
+  RowBox[{"nz", "=", "11"}], " ", ";", " ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Dimensions", " ", "of", " ", "the", " ", "2", "d", " ", "domain"}], " ", 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"points", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"L", ",", "0", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"L", ",", "H", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "H", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0", ",", "V"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"L", ",", "0", ",", "V"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"L", ",", "H", ",", " ", "V"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "H", ",", " ", "V"}], "}"}]}], "}"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"fMinMax", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"-", "2"}], ",", "2"}], "}"}]}], ";", " ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Range", " ", "for", " ", "the", " ", "mangnitude", " ", "of", " ", 
+    "force", " ", "in", " ", "each", " ", "direction"}], " ", 
+   "*)"}]}]}], "Input",
+ CellChangeTimes->{
+  3.8867590647478333`*^9, {3.886759173220069*^9, 3.8867591738512707`*^9}, {
+   3.8867592545968323`*^9, 3.886759262812035*^9}, {3.8867595026012907`*^9, 
+   3.8867595032785883`*^9}, {3.886759686605502*^9, 3.886759696088447*^9}, {
+   3.886759948039256*^9, 3.886759948145823*^9}, {3.886761494920457*^9, 
+   3.8867615745181627`*^9}},
+ Background->RGBColor[
+  0.87, 0.94, 1],ExpressionUUID->"b7bdd5ab-e26d-442b-8ddc-b7fcbbebf384"],
+
+Cell["\<\
+Start the data generation loop of applying random point loads on the top \
+surface of the 3D beam. Again, point loads are applied in incremental steps \
+to avoid divergence of the solver.  \
+\>", "Text",
+ CellChangeTimes->{{3.886759184908367*^9, 3.8867592217236233`*^9}, {
+  3.8867613398548603`*^9, 3.886761371645998*^9}},
+ Background->RGBColor[
+  0.94, 0.91, 0.88],ExpressionUUID->"2636dfaf-4b1c-4152-ad52-9773214b36b5"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Do", "[", 
+   RowBox[{
+    RowBox[{"Do", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"force", "=", 
+        RowBox[{"RandomReal", "[", 
+         RowBox[{"fMinMax", ",", 
+          RowBox[{"{", "3", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"SMTInputData", "[", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"SMTAddDomain", "[", 
+        RowBox[{
+        "\"\<\[CapitalOmega]\>\"", ",", "\"\<OL:SED3H1DFHYH1NeoHooke\>\"", 
+         ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"\"\<E *\>\"", "\[Rule]", "500"}], ",", 
+           RowBox[{"\"\<\[Nu] *\>\"", "->", "0.4"}]}], "}"}]}], "]"}], ";", 
+       "\n", "       ", 
+       RowBox[{"SMTAddEssentialBoundary", "[", 
+        RowBox[{
+         RowBox[{"Polygon", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"0", ",", "H", ",", "0"}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"0", ",", "H", ",", "V"}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"0", ",", "0", ",", "V"}], "}"}]}], "}"}], "]"}], ",", 
+         RowBox[{"1", "\[Rule]", "0"}], ",", 
+         RowBox[{"2", "->", "0"}], ",", 
+         RowBox[{"3", "->", "0"}]}], "]"}], ";", "\n", "       ", 
+       RowBox[{"SMTAddNaturalBoundary", "[", 
+        RowBox[{
+         RowBox[{"Point", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"ix", ",", "iy", ",", "nz"}], "}"}], 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"L", "/", "nx"}], ",", 
+             RowBox[{"H", "/", "ny"}], ",", 
+             RowBox[{"V", "/", "nz"}]}], "}"}]}], "]"}], ",", 
+         RowBox[{"1", "\[Rule]", 
+          RowBox[{"force", "[", 
+           RowBox[{"[", "1", "]"}], "]"}]}], ",", 
+         RowBox[{"2", "\[Rule]", 
+          RowBox[{"force", "[", 
+           RowBox[{"[", "2", "]"}], "]"}]}], ",", 
+         RowBox[{"3", "\[Rule]", 
+          RowBox[{"force", "[", 
+           RowBox[{"[", "3", "]"}], "]"}]}]}], "]"}], ";", "\n", "       ", 
+       RowBox[{"SMTAddMesh", "[", 
+        RowBox[{
+         RowBox[{"Hexahedron", "[", "points", "]"}], ",", 
+         "\"\<\[CapitalOmega]\>\"", ",", "\"\<H1\>\"", ",", 
+         RowBox[{"{", 
+          RowBox[{"nx", ",", "ny", ",", "nz"}], "}"}]}], "]"}], ";", "\n", 
+       "       ", "\[IndentingNewLine]", 
+       RowBox[{"SMTAnalysis", "[", "]"}], ";", "\n", "\[IndentingNewLine]", 
+       RowBox[{"\[Lambda]Max", "=", "1"}], ";", 
+       RowBox[{"\[Lambda]0", "=", "\[Lambda]Max"}], ";", 
+       RowBox[{"\[CapitalDelta]\[Lambda]Min", "=", 
+        RowBox[{"\[Lambda]Max", "/", "1000"}]}], ";", 
+       RowBox[{"\[CapitalDelta]\[Lambda]Max", "=", "\[Lambda]Max"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"tolNR", "=", 
+        RowBox[{"10", "^", 
+         RowBox[{"-", "8"}]}]}], ";", 
+       RowBox[{"maxNR", "=", "15"}], ";", 
+       RowBox[{"targetNR", "=", "8"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"SMTNextStep", "[", 
+        RowBox[{"\"\<\[Lambda]\>\"", "\[Rule]", "\[Lambda]0"}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"While", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"While", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"step", "=", 
+             RowBox[{"SMTConvergence", "[", 
+              RowBox[{"tolNR", ",", "maxNR", ",", 
+               RowBox[{"{", 
+                RowBox[{
+                "\"\<Adaptive BC\>\"", ",", "targetNR", ",", 
+                 "\[CapitalDelta]\[Lambda]Min", ",", 
+                 "\[CapitalDelta]\[Lambda]Max", ",", "\[Lambda]Max"}], 
+                "}"}]}], "]"}]}], "\[IndentingNewLine]", ",", " ", 
+            RowBox[{
+             RowBox[{"SMTNewtonIteration", "[", "]"}], ";"}]}], 
+           "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+          "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+             "step", "\[LeftDoubleBracket]", "4", "\[RightDoubleBracket]"}], 
+             "===", "\"\<MinBound\>\""}], ",", 
+            RowBox[{
+             RowBox[{"SMTStatusReport", "[", "\"\<Analyze\>\"", "]"}], ";", 
+             RowBox[{"SMTStepBack", "[", "]"}], ";"}]}], "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+          "step", "\[LeftDoubleBracket]", "3", "\[RightDoubleBracket]"}]}], 
+         " ", "\[IndentingNewLine]", ",", 
+         RowBox[{
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+            "step", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+            ",", 
+            RowBox[{
+             RowBox[{"SMTStepBack", "[", "]"}], ";"}]}], "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"SMTNextStep", "[", 
+           RowBox[{"\"\<\[CapitalDelta]\[Lambda]\>\"", "\[Rule]", 
+            RowBox[{
+            "step", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+           "]"}]}]}], "\[IndentingNewLine]", "]"}], ";", 
+       "\[IndentingNewLine]", "\n", "        ", 
+       RowBox[{"dispData", "=", 
+        RowBox[{"SMTNodeData", "[", "\"\<at\>\"", "]"}]}], ";", "\n", 
+       "        ", 
+       RowBox[{"forceData", "=", 
+        RowBox[{"ConstantArray", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", "SMTNoNodes"}], 
+         "]"}]}], ";", "\n", "        ", 
+       RowBox[{
+        RowBox[{"forceData", "[", 
+         RowBox[{"[", 
+          RowBox[{
+           RowBox[{"SMTFindNodes", "[", 
+            RowBox[{"Point", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"ix", ",", "iy", ",", "nz"}], "}"}], 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"L", "/", "nx"}], ",", 
+                RowBox[{"H", "/", "ny"}], ",", 
+                RowBox[{"V", "/", "nz"}]}], "}"}]}], "]"}], "]"}], "[", 
+           RowBox[{"[", "1", "]"}], "]"}], "]"}], "]"}], "=", "force"}], ";", 
+       "\n", "        ", 
+       RowBox[{"data", "=", 
+        RowBox[{"Transpose", "[", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Flatten", "[", "forceData", "]"}], ",", 
+           RowBox[{"Flatten", "[", "dispData", "]"}]}], "}"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Write", "[", 
+        RowBox[{"str", ",", 
+         RowBox[{"OutputForm", "[", 
+          RowBox[{"StringTrim", "[", 
+           RowBox[{"ExportString", "[", 
+            RowBox[{"data", ",", "\"\<CSV\>\""}], "]"}], "]"}], "]"}]}], 
+        "]"}], ";"}], "\[IndentingNewLine]", ",", "noTrainings"}], "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"ix", ",", "nx", ",", "1", ",", 
+      RowBox[{"-", "1"}]}], "}"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"iy", ",", "0", ",", "ny"}], "}"}]}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Close", "[", "str", "]"}], ";"}]}], "Input",
+ CellChangeTimes->{
+  3.821965192044854*^9, {3.8219653154195557`*^9, 3.8219653189953995`*^9}, {
+   3.8219655397845397`*^9, 3.8219655864450216`*^9}, {3.821965710134426*^9, 
+   3.8219657350041943`*^9}, {3.8219657828942485`*^9, 
+   3.8219658015948415`*^9}, {3.8219665355432262`*^9, 
+   3.8219665401324463`*^9}, {3.821966847511552*^9, 3.821966849751898*^9}, {
+   3.821966920841444*^9, 3.8219669233415604`*^9}, {3.8219669893214054`*^9, 
+   3.8219670791012683`*^9}, {3.821967122331189*^9, 3.82196716523065*^9}, {
+   3.8219671973207536`*^9, 3.821967260351164*^9}, {3.821967304220663*^9, 
+   3.8219673107368546`*^9}, {3.822038817529505*^9, 3.822038868914257*^9}, {
+   3.822038935830645*^9, 3.8220389463931007`*^9}, {3.822039063613682*^9, 
+   3.822039132577607*^9}, {3.822039489037347*^9, 3.822039516032612*^9}, 
+   3.82203973080825*^9, 3.822039781005536*^9, {3.8220399744515133`*^9, 
+   3.822040046081605*^9}, {3.8220400908420773`*^9, 3.822040101170217*^9}, {
+   3.822040215810095*^9, 3.822040231929935*^9}, {3.822040381015777*^9, 
+   3.822040390033843*^9}, {3.822040837040793*^9, 3.822040873113199*^9}, {
+   3.822041203627969*^9, 3.822041228411079*^9}, {3.886758903234687*^9, 
+   3.886758923618925*^9}, 3.8867590607187157`*^9, 3.886759230574546*^9, {
+   3.88675933505646*^9, 3.886759342094679*^9}, {3.886759726470257*^9, 
+   3.8867597331474047`*^9}, {3.886759765753681*^9, 3.8867598142192*^9}, {
+   3.886759930389045*^9, 3.886759942011567*^9}, {3.886760066454688*^9, 
+   3.886760066964253*^9}, {3.886761232702545*^9, 3.886761244510921*^9}},
+ Background->RGBColor[
+  0.87, 0.94, 1],ExpressionUUID->"4798baed-be29-492f-8f8b-bd6d61f81a6e"],
+
+Cell["Save the element connectivity matrix (topology of the mesh)", "Text",
+ CellChangeTimes->{{3.886757904786881*^9, 3.886757923853223*^9}},
+ Background->RGBColor[
+  0.94, 0.91, 0.88],ExpressionUUID->"d28ea502-d990-413d-bab4-1dbafebe1f75"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"elements", "=", " ", "SMTElements"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"connectivity", " ", "=", " ", 
+   RowBox[{"elements", "[", 
+    RowBox[{"[", 
+     RowBox[{"All", ",", "3"}], "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\<../main/connectivity/connect_3dbeam.csv\>\"", ",", "connectivity"}], 
+   "]"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.859968339154389*^9, 3.859968359518798*^9}, {
+   3.859968411067058*^9, 3.8599684111736526`*^9}, 3.8599684733704777`*^9, {
+   3.8599688095070047`*^9, 3.859968840208817*^9}, {3.859968899285262*^9, 
+   3.859968910465919*^9}, {3.859968963050453*^9, 3.859968977807967*^9}, {
+   3.8623109978725767`*^9, 3.862311017606647*^9}, {3.862415035214591*^9, 
+   3.8624150396134768`*^9}, {3.886758150200418*^9, 3.886758190134881*^9}, {
+   3.886761399207737*^9, 3.886761399997923*^9}, 3.888580471822447*^9},
+ Background->RGBColor[
+  0.87, 0.94, 1],ExpressionUUID->"6b506043-4217-4b77-8dfb-66c0995b0c3a"]
+},
+WindowSize->{1078, 747},
+WindowMargins->{{Automatic, -1552}, {44, Automatic}},
+Magnification:>1.25 Inherited,
+FrontEndVersion->"12.1 for Mac OS X x86 (64-bit) (March 13, 2020)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"83d01d62-8103-439c-9d5b-fd03edec3169"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 253, 5, 57, "Input",ExpressionUUID->"bfdda654-c2f4-45f7-90d9-e46c25286ea2"],
+Cell[814, 27, 206, 3, 64, "Text",ExpressionUUID->"9cf7c054-3bdb-4c14-9445-4d8d051ecb32"],
+Cell[1023, 32, 2128, 57, 162, "Input",ExpressionUUID->"b7bdd5ab-e26d-442b-8ddc-b7fcbbebf384"],
+Cell[3154, 91, 431, 8, 93, "Text",ExpressionUUID->"2636dfaf-4b1c-4152-ad52-9773214b36b5"],
+Cell[3588, 101, 8683, 195, 916, "Input",ExpressionUUID->"4798baed-be29-492f-8f8b-bd6d61f81a6e"],
+Cell[12274, 298, 240, 3, 64, "Text",ExpressionUUID->"d28ea502-d990-413d-bab4-1dbafebe1f75"],
+Cell[12517, 303, 1044, 21, 110, "Input",ExpressionUUID->"6b506043-4217-4b77-8dfb-66c0995b0c3a"]
+}
+]
+*)
+
