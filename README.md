@@ -1,7 +1,8 @@
 ## MAgNET: A Graph U-Net Architecture for Mesh-Based Simulations  
 
-This repository provides the implementations of "MAgNET: A Graph U-Net Architecture for Mesh-Based Simulations".
+This repository provides the implementations of "[MAgNET: A Graph U-Net Architecture for Mesh-Based Simulations](https://arxiv.org/abs/2211.00713)".
 
+<br />
 
 ## Dependencies
 

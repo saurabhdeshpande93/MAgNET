@@ -55,7 +55,7 @@ cnn_channels = {
 ## Number of training epochs
 epochs = { 'magnet': {'2dlshape':   12000,
                       "2dhole"  :   6000,
-                      "3dbeam"  :   300,
-                      "3dbreast":   1500},
+                      "3dbeam"  :   600,
+                      "3dbreast":   2000},
              'cnn' : {"2dlshape":   12000,
-                       "3dbeam" :   []}}
+                       "3dbeam" :   150}}

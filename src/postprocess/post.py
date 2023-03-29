@@ -1,6 +1,4 @@
-import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import sys
 sys.path.append('../main/')
 from utils import get_data, reorder_dof, remove_pad, max_disp_index
