@@ -32,6 +32,8 @@ Cite our paper if you use this code in your own work:
       title={MAgNET: A Graph U-Net Architecture for Mesh-Based Simulations},
       author={Saurabh Deshpande and Stéphane P. A. Bordas and Jakub Lengiewicz},
       year={2022},
+      doi = {https://doi.org/10.48550/arXiv.2211.00713},
+      url = {https://arxiv.org/abs/2211.00713},
       eprint={2211.00713},
       archivePrefix={arXiv},
       primaryClass={cs.LG}
