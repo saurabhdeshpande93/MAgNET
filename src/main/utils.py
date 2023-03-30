@@ -114,7 +114,7 @@ def nth_adjacency(A, n):
     return A_n
 
 
-def lrate_scheduler(case):
+def lrate_scheduler(case,type):
 
     '''
     Learning rate schedulers used in the paper. 2D and 3D cases use different schedulers
@@ -129,6 +129,16 @@ def lrate_scheduler(case):
                 lr = lr  - (0.0001 - 0.00001)/(190)
             elif 200 < epoch < 900:
                 lr = lr- (0.00001 - 0.000001)/(700)
+            else:
+                lr = lr
+            return lr
+
+    elif case =='3dbeam' and type =='cnn':
+        def scheduler(epoch, lr):
+
+            if epoch < 85:
+                k = 0.001
+                lr = lr * np.exp(-k * (epoch))
             else:
                 lr = lr
             return lr

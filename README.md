@@ -2,11 +2,15 @@
 
 This repository provides the implementations of "[MAgNET: A Graph U-Net Architecture for Mesh-Based Simulations](https://arxiv.org/abs/2211.00713)".
 
+Supplementary data for the paper is available on [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7784804.svg)](https://doi.org/10.5281/zenodo.7784804).
+
+
+
 <br />
 
 ## Dependencies
 
-Scripts have been tested running under Python 3.10.9, with the following packages installed (along with their dependencies). In addition, CUDA 10.1 and cuDNN 7 have been used.
+Scripts have been tested running under Python 3.9.5, with the following packages installed (along with their dependencies). In addition, CUDA 10.1 and cuDNN 7 have been used.
 
 
 - `tensorflow-gpu==2.4.1`

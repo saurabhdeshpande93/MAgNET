@@ -56,7 +56,7 @@ if training == False:
 else:
     no_epochs = epochs[type][case]
     new_weights_path = weights_path+case+'_'+type+'new.h5'
-    lr_scheduler = lrate_scheduler(case)
+    lr_scheduler = lrate_scheduler(case,type)
     network.train(model, data, new_weights_path, lr_scheduler, no_epochs)
     model.load_weights(new_weights_path)
 
@@ -68,18 +68,13 @@ if type == 'cnn': predictions = predictions.reshape((n_test,dof))
 
 ## Convert degrees of freedom ordering to Acegen format
 predictions = reorder_dof(predictions,dof,dim)
-X_test = reorder_dof(data[-2].reshape((n_test,dof)),dof,dim)
-Y_test = reorder_dof(data[-1].reshape((n_test,dof)),dof,dim)
+
 ## Remove zero paded region for the 2D L-shape CNN case
 if case == '2dlshape' and type == 'cnn':
     predictions = remove_pad(predictions)
-    X_test = remove_pad(X_test)
-    Y_test = remove_pad(Y_test)
 
 
 np.save(prediction_path+case+'_'+type+'_predicts.npy', predictions)
-np.save(prediction_path+case+'_'+type+'_x.npy', X_test)
-np.save(prediction_path+case+'_'+type+'_y.npy', Y_test)
 
 print("=== Predictions are saved in : {}".format(prediction_path))
 
