@@ -15,7 +15,7 @@ Scripts have been tested running under Python 3.9.5, with the following packages
 
 - `tensorflow-gpu==2.4.1`
 - `keras==2.4.3`
-- `numpy==1.24.2`
+- `numpy==1.19.5`
 - `pandas==1.3.4`
 - `scikit-learn==1.0.1`
 
@@ -36,7 +36,6 @@ Cite our paper if you use this code in your own work:
       archivePrefix={arXiv},
       primaryClass={cs.LG}
 }
-
 ```
 
 <br />
