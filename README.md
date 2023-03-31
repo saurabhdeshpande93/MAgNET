@@ -28,10 +28,10 @@ All the finite element simulations are performed using the [AceFEM](http://symec
 Cite our paper if you use this code in your own work:
 
 ```
-@misc{deshpande2022magnet,
+@misc{deshpande2023magnet,
       title={MAgNET: A Graph U-Net Architecture for Mesh-Based Simulations},
       author={Saurabh Deshpande and Stéphane P. A. Bordas and Jakub Lengiewicz},
-      year={2022},
+      year={2023},
       doi = {https://doi.org/10.48550/arXiv.2211.00713},
       url = {https://arxiv.org/abs/2211.00713},
       eprint={2211.00713},
