@@ -2,15 +2,16 @@
 
 MAgNET is a graph U-Net architecture composed of two novel deep learning layers. The first layer is the Multichannel Aggregation (MAg) layer, which expands upon the idea of multichannel localized operations in convolutional neural networks to accommodate arbitrary graph-structured inputs. And second type of layers are pooling/unpooling layers, designed to facilitate efficient learning on high-dimensional inputs by utilizing reduced representations of arbitrary graph-structured inputs.
 
-<br /><br />
+<br />
 
 ![schematic](MAgNET.jpg)
 
-<br /><br />
+<br />
 
 Sources for MAg and GPool/GUnpool are located in [<span style="color:blue">layers</span>](src/main/layers).
 
 <br />
+
 ## Implementation to non-linear Finite Element dataset
 
 We demonstrate the predictive capabilities of MAgNET in surrogate modeling for non-linear finite element simulations in the mechanics of solids. The supplementary finite element simulation data utilised in the paper is available on [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7784804.svg)](https://doi.org/10.5281/zenodo.7784804).
