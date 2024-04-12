@@ -4,14 +4,14 @@ MAgNET is a graph U-Net architecture composed of two novel deep learning layers.
 
 <br />
 
-![schematic](graph_unet.jpg)
+![schematic](graphunet.jpg)
 
 <br />
 
-Sources for MAg and GPool/GUnpool are located in [<span style="color:blue">layers</span>](src/main/layers)
+Sources for MAg and GPool/GUnpool are located in [<span style="color:blue">layers</span>](src/main/layers).
 
 
-# Implementation to non-linear Finite Element dataset
+## Implementation to non-linear Finite Element dataset
 
 We demonstrate the predictive capabilities of MAgNET in surrogate modeling for non-linear finite element simulations in the mechanics of solids. The supplementary finite element simulation data utilised in the paper is available on [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7784804.svg)](https://doi.org/10.5281/zenodo.7784804).
 
